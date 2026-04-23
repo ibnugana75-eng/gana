@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Modern</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 15px;
+      width: 350px;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 0.8s ease;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    button {
+      width: 48%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .kirim {
+      background: #00c6ff;
+      color: white;
+    }
+
+    .reset {
+      background: #ff4b5c;
+      color: white;
+    }
+
+    .hasil {
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .success {
+      margin-top: 10px;
+      color: #00ffae;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Form Kontak</h2>
+
+  <input type="text" id="nama" placeholder="Nama">
+  <input type="email" id="email" placeholder="Email">
+  <textarea id="pesan" rows="3" placeholder="Pesan"></textarea>
+
+  <div style="display:flex; justify-content:space-between;">
+    <button class="kirim" onclick="kirim()">Kirim</button>
+    <button class="reset" onclick="resetForm()">Reset</button>
+  </div>
+
+  <div class="success" id="notif"></div>
+  <div class="hasil" id="output"></div>
+</div>
+
+<script>
+  function kirim() {
+    const nama = document.getElementById('nama').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pesan = document.getElementById('pesan').value.trim();
+
+    if (!nama || !email || !pesan) {
+      alert("Harap isi semua field!");
+      return;
+    }
+
+    const data = { nama, email, pesan };
+    localStorage.setItem("dataForm", JSON.stringify(data));
+
+    tampilkanData();
+    document.getElementById("notif").innerText = "✅ Data berhasil disimpan!";
+  }
+
+  function tampilkanData() {
+    const data = JSON.parse(localStorage.getItem("dataForm"));
+    if (data) {
+      document.getElementById("output").innerHTML = `
+        <b>Data Tersimpan:</b><br>
+        Nama: ${data.nama}<br>
+        Email: ${data.email}<br>
+        Pesan: ${data.pesan}
+      `;
+    }
+  }
+
+  function resetForm() {
+    document.getElementById('nama').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('pesan').value = "";
+    document.getElementById("notif").innerText = "";
+    document.getElementById("output").innerHTML = "";
+    localStorage.removeItem("dataForm");
+  }
+
+  // tampilkan saat reload
+  tampilkanData();
+</script>
+
+</body>
+</html>
